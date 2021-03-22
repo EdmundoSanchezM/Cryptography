@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Practice 0 - RSA</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="../static/escom.png">
+    <title>Practice 1 - Vigenére cipher & Affine cipher</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="static/escom.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet'
         href='https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.9.1/css/OverlayScrollbars.min.css'>
@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.min.css" id="theme-styles">
     <script src="https://code.jquery.com/jquery-2.2.4.js"
         integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/6cff7f6120.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -26,7 +25,7 @@
         <div class="container">
             <div class="navbar-brand">
                 <a class="navbar-item">
-                    <img src="../static/escom.png" alt="Logo">
+                    <img src="static/escom.png" alt="Logo">
                 </a>
                 <span class="navbar-burger burger" data-target="navbarMenu">
                     <span></span>
@@ -37,16 +36,35 @@
             <div id="navbarMenu" class="navbar-menu">
                 <div class="navbar-end">
 
-                    <a class="navbar-item" href="../">
+                    <a class="navbar-item is-active">
                         Home
                     </a>
-
-                    <a class="navbar-item" href="../Cypher/">
-                        Cypher
+                    <a class="navbar-item" href="Vigenere/">
+                        Vigenére cipher
                     </a>
-                    <a class="navbar-item is-active">
-                        Decipher
+                    <a class="navbar-item" href="Affine/">
+                        Affine cipher
                     </a>
+                    <!--
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                                Account
+                            </a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item">
+                                    Dashboard
+                                </a>
+                            <a class="navbar-item">
+                                    Profile
+                                </a>
+                            <a class="navbar-item">
+                                    Settings
+                                </a>
+                            <hr class="navbar-divider">
+                            <div class="navbar-item">
+                                Logout
+                            </div>
+                    -->
                 </div>
             </div>
         </div>
@@ -56,10 +74,10 @@
     <!-- END NAV -->
 
     <section class="hero is-info is-medium is-bold"
-        style="background-image:url('../static/BannerRSA.png'); background-size: 100% 100%; ">
+        style="background-image:url('static/HomeBanner.png'); background-size: 100% 100%; ">
         <div class="hero-body">
             <div class="container has-text-centered">
-                <h1 class="title has-text-black">Decipher</h1>
+                <h1 class="title has-text-white">Practice 1 - Vigenére cipher & Affine cipher</h1>
             </div>
         </div>
     </section>
@@ -74,72 +92,42 @@
                     <div class="card-content">
                         <div class="media">
                             <div class="media-content has-text-centered">
-                                <p class="title article-title">Decipher a txt file</p>
+                                <p class="title article-title">Implementation of Vigenére cipher and Affine cipher in Python and Django</p>
+                                <div class="tags has-addons level-item">
+                                    <span class="tag is-rounded is-info">3CM15 - Team 2</span>
+                                    <span class="tag is-rounded">March 21, 2021</span>
+                                </div>
                             </div>
                         </div>
-
                         <div class="content article-body">
-                            <h3 class="has-text-left">First step.- Choose a cyphered txt file from your computer to
-                                decipher</h3>
-                            <div class="file has-name">
-                                <label class="file-label">
-                                    <input class="file-input" id="file-upload" type="file" name="resume">
-                                    <span class="file-cta">
-                                        <span class="file-icon">
-                                            <i class="fas fa-upload"></i>
-                                        </span>
-                                        <span class="file-label">
-                                            Choose a file…
-                                        </span>
-                                    </span>
-                                    <span for="file-upload" id="file-upload-filename" class="file-name">
-                                    </span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="content article-body">
-                            <h3 class="has-text-left">Second step.- Choose a pem file (private key) from your computer
-                            </h3>
-                            <div class="file has-name">
-                                <label class="file-label">
-                                    <input class="file-input" id="file-upload2" type="file" name="resume">
-                                    <span class="file-cta">
-                                        <span class="file-icon">
-                                            <i class="fas fa-upload"></i>
-                                        </span>
-                                        <span class="file-label">
-                                            Choose a file…
-                                        </span>
-                                    </span>
-                                    <span for="file-upload" id="file-upload-filename2" class="file-name">
-                                    </span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="content article-body">
-                            <h3 class="has-text-left">Third step.- Decipher</h3>
-                            <p> Please click in the next button to decipher the txt file with the private key chosen:
-                            </p>
-                            <form id="formCypher" onsubmit="return Decifrar(this)">
-                                <input class="button is-info" type="submit" value="Let's go decipher">
+                            <h3 class="has-text-left">First option.-You can use the Vigenére cipher to cipher a txt or dechipher:</p>
+                            <form id="formKeys" action="GenerateKeys/">
+                                <input class="button is-info" type="submit" onclick="generarLlaves()"
+                                    value="Generate keys">
                             </form>
                             {% if messages %}
                             <br />
-                            {% for message in messages %}
-                            {%if message.tags == 'error'%}
-                            <div class="notification is-danger">
-                            {% elif message.tags == 'success'%}
                             <div class="notification is-success">
-                             {% endif %}
                                 <button class="delete"></button>
+                                {% for message in messages %}
                                 <strong>
                                     <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
                                 </strong>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                             {% endif %}
+                        </div>
+
+                        <div class="content article-body">
+                            <h3 class="has-text-left">First option.- Vigenére cipher</h3>
+                            <p>You can cipher a txt file using Vigenére cipher and the output will be a .vig with the ciphertext and you can descipher the .vig file a the output will be a .txt with the plaintext.
+                            </p>
+                        </div>
+
+                        <div class="content article-body">
+                            <h3 class="has-text-left">Second option.- Affine cipher</h3>
+                            <p>You can cipher a txt file using Affine cipher and the output will be a .aff with the ciphertext and you can descipher the .aff file a the output will be a .txt with the plaintext.
+                                </p>
                         </div>
                     </div>
                 </div>
@@ -151,7 +139,7 @@
                             <div class="columns">
                                 <div class="column">
                                     <span class="tag is-black is-medium is-rounded">
-                                        Student: Chacon Inostrosa Jaime Enrique
+                                       Student: Chacon Inostrosa Jaime Enrique
                                     </span>
                                 </div>
                                 <div class="column">
@@ -191,7 +179,10 @@
             OverlayScrollbars(document.querySelectorAll("body"), {});
         });
 
+        function generarLlaves(form) {
+            document.getElementById("formKeys").submit();
 
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
@@ -202,34 +193,6 @@
                 });
             });
         });
-
-        var input = document.getElementById('file-upload');
-        var infoArea = document.getElementById('file-upload-filename');
-
-        input.addEventListener('change', showFileName);
-
-        function showFileName(event) {
-            var input = event.srcElement;
-            var fileName = input.files[0].name;
-            infoArea.textContent = fileName;
-        }
-
-        var input2 = document.getElementById('file-upload2');
-        var infoArea2 = document.getElementById('file-upload-filename2');
-
-        input2.addEventListener('change', showFileName2);
-
-        function showFileName2(event) {
-            var input2 = event.srcElement;
-            var fileName = input2.files[0].name;
-            infoArea2.textContent = fileName;
-        }
-
-
-        function Decifrar(form) {
-            form.action = "../DecipherTxt/" + infoArea.textContent + "/" + infoArea2.textContent;
-            return true;
-        }
     </script>
 </body>
 

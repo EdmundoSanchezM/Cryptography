@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Practice 0 - RSA</title>
+    <title>Practice 1 - Vigenére cipher & Affine cipher</title>
     <link rel="icon" type="image/png" sizes="32x32" href="../static/escom.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet'
@@ -40,13 +40,45 @@
                     <a class="navbar-item" href="../">
                         Home
                     </a>
-
-                    <a class="navbar-item" href="../Cypher/">
-                        Cypher
-                    </a>
                     <a class="navbar-item is-active">
-                        Decipher
+                        Vigenére cipher
                     </a>
+                    <a class="navbar-item" href="../Affine/">
+                        Affine cipher
+                    </a>
+                    <!--
+                        <a class="navbar-item">
+                            Features
+                        </a>
+                    <a class="navbar-item">
+                            Team
+                        </a>
+                    <a class="navbar-item">
+                            Archives
+                        </a>
+                    <a class="navbar-item">
+                            Help
+                        </a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                                Account
+                            </a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item">
+                                    Dashboard
+                                </a>
+                            <a class="navbar-item">
+                                    Profile
+                                </a>
+                            <a class="navbar-item">
+                                    Settings
+                                </a>
+                            <hr class="navbar-divider">
+                            <div class="navbar-item">
+                                Logout
+                            </div>
+                    -->
+
                 </div>
             </div>
         </div>
@@ -56,10 +88,10 @@
     <!-- END NAV -->
 
     <section class="hero is-info is-medium is-bold"
-        style="background-image:url('../static/BannerRSA.png'); background-size: 100% 100%; ">
+        style="background-image:url('../static/vigenere.jpg'); background-size: 100% 100%; ">
         <div class="hero-body">
             <div class="container has-text-centered">
-                <h1 class="title has-text-black">Decipher</h1>
+                <h1 class="title has-text-black">Vigenére cipher</h1>
             </div>
         </div>
     </section>
@@ -69,18 +101,18 @@
         <!-- START ARTICLE FEED -->
         <section class="articles">
             <div class="column is-8 is-offset-2">
+
                 <!-- START ARTICLE -->
                 <div class="card article">
                     <div class="card-content">
                         <div class="media">
                             <div class="media-content has-text-centered">
-                                <p class="title article-title">Decipher a txt file</p>
+                                <p class="title article-title">Cypher a txt file</p>
                             </div>
                         </div>
 
                         <div class="content article-body">
-                            <h3 class="has-text-left">First step.- Choose a cyphered txt file from your computer to
-                                decipher</h3>
+                            <h3 class="has-text-left">First step.- Choose a txt file from your computer to cypher</h3>
                             <div class="file has-name">
                                 <label class="file-label">
                                     <input class="file-input" id="file-upload" type="file" name="resume">
@@ -96,10 +128,61 @@
                                     </span>
                                 </label>
                             </div>
+
+                            <h3 class="has-text-left">Second step.- Write your key to cipher or you can generate a
+                                random key
+                            </h3>
+                            <p>Please select an option</p>
+                            <div class="select is-info">
+                                <select id="tipoLlave" onchange="verLlave()">
+                                    <option>Options</option>
+                                    <option value="0">Generate random key</option>
+                                    <option value="1">Write your own key</option>
+                                </select>
+                            </div>
+                            <div id="usuarioLlave" style="display:none">
+                                <br>
+                                Please write your key:
+                                <input id="llaveU" class="input is-info is-normal" type="text" placeholder="Key input">
+                            </div>
+
+                            <h3 class="has-text-left">Third step.- Cypher</h3>
+                            <p> Please click in the next button to cypher the txt file with the key that has you been
+                                chosen:</p>
+                            <form id="formCypher" onsubmit="return Cifrar(this)">
+                                <input class="button is-info" type="submit" value="Let's go cypher">
+                            </form>
+                            {% if messages %}
+                            <br />
+                            {% for message in messages %}
+                            {% if "CypherM" in message.extra_tags %}
+                            <div class="notification is-success">
+                                <button class="delete"></button>
+                                <strong>
+                                    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                                        {{message}}
+                                        </li>
+                                </strong>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <!-- END ARTICLE -->
+
+                <!-- START ARTICLE -->
+                <div class="card article">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content has-text-centered">
+                                <p class="title article-title">Decipher a txt file</p>
+                            </div>
                         </div>
 
                         <div class="content article-body">
-                            <h3 class="has-text-left">Second step.- Choose a pem file (private key) from your computer
+                            <h3 class="has-text-left">First step.- Choose a .vig file from your computer to decipher
                             </h3>
                             <div class="file has-name">
                                 <label class="file-label">
@@ -116,34 +199,37 @@
                                     </span>
                                 </label>
                             </div>
-                        </div>
 
-                        <div class="content article-body">
-                            <h3 class="has-text-left">Third step.- Decipher</h3>
-                            <p> Please click in the next button to decipher the txt file with the private key chosen:
-                            </p>
-                            <form id="formCypher" onsubmit="return Decifrar(this)">
+                            <h3 class="has-text-left">Second step.- Write your key to decipher the .vig
+                            </h3>
+                            Please write your key:
+                            <input id="llaveUD" class="input is-info is-normal" type="text" placeholder="Key input">
+
+                            <h3 class="has-text-left">Third step.- Cypher</h3>
+                            <p> Please click in the next button to cypher the txt file with the public key chosen:</p>
+                            <form id="formDecipher" onsubmit="return Descifrar(this)">
                                 <input class="button is-info" type="submit" value="Let's go decipher">
                             </form>
                             {% if messages %}
                             <br />
                             {% for message in messages %}
-                            {%if message.tags == 'error'%}
-                            <div class="notification is-danger">
-                            {% elif message.tags == 'success'%}
+                            {% if "DecipherM" in message.extra_tags %}
                             <div class="notification is-success">
-                             {% endif %}
                                 <button class="delete"></button>
                                 <strong>
-                                    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                                    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                                        {{message}}
+                                        </li>
                                 </strong>
                             </div>
+                            {% endif %}
                             {% endfor %}
                             {% endif %}
                         </div>
                     </div>
                 </div>
                 <!-- END ARTICLE -->
+
                 <!-- START PROMO BLOCK -->
                 <section class="hero is-info is-bold is-small promo-block">
                     <div class="hero-body">
@@ -182,16 +268,14 @@
         </section>
         <!-- END ARTICLE FEED -->
     </div>
-    <script async type="text/javascript" src="https://bulmatemplates.github.io/bulma-templates/js/bulma.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.9.1/js/OverlayScrollbars.min.js'></script>
+    <script async type="text/javascript" src="https://bulmatemplates.github.io/bulma-templates/js/bulma.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             //The first argument are the elements to which the plugin shall be initialized
             //The second argument has to be at least a empty object or a object with your desired options
             OverlayScrollbars(document.querySelectorAll("body"), {});
         });
-
-
 
         document.addEventListener('DOMContentLoaded', () => {
             (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
@@ -205,13 +289,37 @@
 
         var input = document.getElementById('file-upload');
         var infoArea = document.getElementById('file-upload-filename');
-
         input.addEventListener('change', showFileName);
+
+        var tLlave = 0 //random
 
         function showFileName(event) {
             var input = event.srcElement;
             var fileName = input.files[0].name;
             infoArea.textContent = fileName;
+        }
+
+        function verLlave() {
+            var x = document.getElementById("tipoLlave").value;
+            if (x == 1) {
+                document.getElementById("usuarioLlave").style.display = "block";
+                tLlave = 1;
+            } else {
+                document.getElementById("usuarioLlave").style.display = "none";
+                tLlave = 0;
+            }
+        }
+
+        function Cifrar(form) {
+            var llaveUser = document.getElementById('llaveU').value
+            if (tLlave === 1) {
+                finalLaveU = llaveUser.toLowerCase();
+                llaveUser = finalLaveU.replace(' ', '');
+            } else {
+                llaveUser = "777"
+            }
+            form.action = "../CypherTxtVigenere/" + infoArea.textContent + "/" + llaveUser
+            return true
         }
 
         var input2 = document.getElementById('file-upload2');
@@ -225,11 +333,14 @@
             infoArea2.textContent = fileName;
         }
 
-
-        function Decifrar(form) {
-            form.action = "../DecipherTxt/" + infoArea.textContent + "/" + infoArea2.textContent;
-            return true;
+        function Descifrar(form) {
+            var llaveUser = document.getElementById('llaveUD').value
+            finalLaveU = llaveUser.toLowerCase();
+            llaveUser = finalLaveU.replace(' ', '');
+            form.action = "../DecipherTxtVigenere/" + infoArea2.textContent + "/" + llaveUser
+            return true
         }
+
     </script>
 </body>
 
