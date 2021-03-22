@@ -100,25 +100,6 @@
                             </div>
                         </div>
                         <div class="content article-body">
-                            <h3 class="has-text-left">First option.-You can use the Vigenére cipher to cipher a txt or dechipher:</p>
-                            <form id="formKeys" action="GenerateKeys/">
-                                <input class="button is-info" type="submit" onclick="generarLlaves()"
-                                    value="Generate keys">
-                            </form>
-                            {% if messages %}
-                            <br />
-                            <div class="notification is-success">
-                                <button class="delete"></button>
-                                {% for message in messages %}
-                                <strong>
-                                    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-                                </strong>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="content article-body">
                             <h3 class="has-text-left">First option.- Vigenére cipher</h3>
                             <p>You can cipher a txt file using Vigenére cipher and the output will be a .vig with the ciphertext and you can descipher the .vig file a the output will be a .txt with the plaintext.
                             </p>
