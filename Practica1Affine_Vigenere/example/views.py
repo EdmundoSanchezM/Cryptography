@@ -1,12 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from example.Llaves import GenerateKeys
-from example.RSA import cypher, decipher
 from example.Vigenere import encrypt, decrypt
-
+from example.Affine import Encrypt, Decrypt
 
 def MainPage(request):
     return render(request, 'example/index.html')
+
+def VigenerePage(request):
+    return render(request, 'example/Vigenere.html')
+
+def AffinePage(request):
+    return render(request, 'example/Affine.html')
 
 def CifrarVigenere(request, filetxt, key):
     message = encrypt(filetxt,key)
@@ -24,23 +28,18 @@ def DescifrarVigenere(request, filetxt, key):
         messages.add_message(request, messages.SUCCESS, message, extra_tags='DecipherM')
     return redirect('vigenere')
 
-def VigenerePage(request):
-    return render(request, 'example/Vigenere.html')
-
-def DescifrarPage(request):
-    return render(request, 'example/Descifrado.html')
-
-def CifrarTxt(request, filetxt, privatekey):
-    message = cypher(filetxt,privatekey)
-    messages.add_message(request, messages.SUCCESS, message)
-    return redirect('cypher')
-
-def DescifrarTxt(request, filetxt, privatekey):
-    message = decipher(filetxt,privatekey)
-    #Manejo de error
-    if(len(message) == 16):
-        messages.add_message(request, messages.ERROR, message+' wrong private key')
+def CifrarAffine(request, filetxt, a, b, alphabet):
+    message = Encrypt(filetxt,alphabet,int(a),int(b))
+    if(len(message) <= 22):
+        messages.add_message(request, messages.ERROR, message, extra_tags='CypherM')
     else:
-        messages.add_message(request, messages.SUCCESS, message)
+        messages.add_message(request, messages.SUCCESS, message +', now you can go to decipher' , extra_tags='CypherM')
+    return redirect('affine')
 
-    return redirect('descipher')
+def DescifrarAffine(request, filetxt, a, b, alphabet):
+    message = Decrypt(filetxt,alphabet,int(a),int(b))
+    if(len(message) == 16):
+        messages.add_message(request, messages.ERROR, message ,extra_tags='DecipherM')
+    else:
+        messages.add_message(request, messages.SUCCESS, message, extra_tags='DecipherM')
+    return redirect('affine')

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Practice 1 - Vigenére cipher & Affine cipher</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/escom.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet'
+        href='https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.9.1/css/OverlayScrollbars.min.css'>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <!-- Bulma Version 0.9.0-->
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.min.css" id="theme-styles">
+    <script src="https://code.jquery.com/jquery-2.2.4.js"
+        integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/6cff7f6120.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- START NAV -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item">
+                    <img src="../static/escom.png" alt="Logo">
+                </a>
+                <span class="navbar-burger burger" data-target="navbarMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </div>
+            <div id="navbarMenu" class="navbar-menu">
+                <div class="navbar-end">
+
+                    <a class="navbar-item" href="../">
+                        Home
+                    </a>
+                    <a class="navbar-item" href="../Vigenere/">
+                        Vigenére cipher
+                    </a>
+                    <a class="navbar-item is-active">
+                        Affine cipher
+                    </a>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </nav>
+    <!-- END NAV -->
+
+    <section class="hero is-info is-medium is-bold"
+        style="background-image:url('../static/affine.jpg'); background-size: 100% 100%; ">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title has-text-white">Affine cipher</h1>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- START ARTICLE FEED -->
+        <section class="articles">
+            <div class="column is-8 is-offset-2">
+
+                <!-- START ARTICLE -->
+                <div class="card article">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content has-text-centered">
+                                <p class="title article-title">Cypher a txt file</p>
+                            </div>
+                        </div>
+
+                        <div class="content article-body">
+                            <h3 class="has-text-left">First step.- Choose a txt file from your computer to cypher</h3>
+                            <div class="file has-name">
+                                <label class="file-label">
+                                    <input class="file-input" id="file-upload" type="file" name="resume">
+                                    <span class="file-cta">
+                                        <span class="file-icon">
+                                            <i class="fas fa-upload"></i>
+                                        </span>
+                                        <span class="file-label">
+                                            Choose a file…
+                                        </span>
+                                    </span>
+                                    <span for="file-upload" id="file-upload-filename" class="file-name">
+                                    </span>
+                                </label>
+                            </div>
+
+                            <h3 class="has-text-left">Second step.- Write your alphabet to cipher or you
+                                can choose some default alphabet
+                            </h3>
+                            <p>Please select an option</p>
+                            <div class="select is-info">
+                                <select id="tipoAlphabet" onchange="verAlphabet()">
+                                    <option>Alphabet options</option>
+                                    <option value="0">English alphabet</option>
+                                    <option value="1">Write your alphabet</option>
+                                    <option value="2">Spanish alphabet</option>
+                                    <option value="3">ASCII (256 elements)</option>
+                                    <option value="4">Digits (0-9) W/o spaces</option>
+                                </select>
+                            </div>
+                            <div id="usuarioAlfabeto" style="display:none">
+                                <br>
+                                Please write your alphabet:
+                                <input id="alphabetIN" class="input is-info is-normal" type="text"
+                                    placeholder="Alphabet input">
+                                <p class="help is-info">Separate with commas</p>
+                            </div>
+
+                            <h3 class="has-text-left">Third step.- Write your alpha and beta values to cipher or you
+                                can generate a randomly
+                            </h3>
+                            <p>Please select an option</p>
+                            <div class="select is-info">
+                                <select id="tipoLlave" onchange="verLlave()">
+                                    <option>Options</option>
+                                    <option value="0">Generate random alpha and beta values</option>
+                                    <option value="1">Write your alpha and beta values</option>
+                                </select>
+                            </div>
+                            <div id="usuarioLlave" style="display:none">
+                                <br>
+                                <div class="columns">
+                                    <div class="column">
+                                        Please write your alpha value:
+                                        <input id="alphaV" class="input is-info is-normal" type="number"
+                                            placeholder="Alpha input">
+                                    </div>
+                                    <div class="column">
+                                        Please write your beta value:
+                                        <input id="betaV" class="input is-info is-normal" type="number"
+                                            placeholder="Beta input">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 class="has-text-left">Fourth step.- Cypher</h3>
+                            <p> Please click in the next button to cypher the txt file with the key that has you been
+                                chosen:</p>
+                            <form id="formCypher" onsubmit="return Cifrar(this)">
+                                <input class="button is-info" type="submit" value="Let's go cypher">
+                            </form>
+                            {% if messages %}
+                            <br />
+                            {% for message in messages %}
+                            {% if "CypherM" in message.extra_tags %}
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                            <div class="notification is-danger">
+                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                            <div class="notification is-success">
+                            {% endif %}
+                                <button class="delete"></button>
+                                <strong>
+                                    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                                </strong>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END ARTICLE -->
+
+                    <!-- START ARTICLE -->
+                    <div class="card article">
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content has-text-centered">
+                                    <p class="title article-title">Decipher a txt file</p>
+                                </div>
+                            </div>
+
+                            <div class="content article-body">
+                                <h3 class="has-text-left">First step.- Choose a .aff file from your computer to decipher
+                                </h3>
+                                <div class="file has-name">
+                                    <label class="file-label">
+                                        <input class="file-input" id="file-upload2" type="file" name="resume">
+                                        <span class="file-cta">
+                                            <span class="file-icon">
+                                                <i class="fas fa-upload"></i>
+                                            </span>
+                                            <span class="file-label">
+                                                Choose a file…
+                                            </span>
+                                        </span>
+                                        <span for="file-upload" id="file-upload-filename2" class="file-name">
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <h3 class="has-text-left">Second step.- Write your alphabet to decipher or you
+                                    can choose some default alphabet
+                                </h3>
+                                <p>Please select an option</p>
+                                <div class="select is-info">
+                                    <select id="tipoAlphabet2" onchange="verAlphabet2()">
+                                        <option>Alphabet options</option>
+                                        <option value="0">English alphabet</option>
+                                        <option value="1">Write your alphabet</option>
+                                        <option value="2">Spanish alphabet</option>
+                                        <option value="3">ASCII (256 elements)</option>
+                                        <option value="4">Digits (0-9) W/o spaces</option>
+                                    </select>
+                                </div>
+                                <div id="usuarioAlfabeto2" style="display:none">
+                                    <br>
+                                    Please write your alphabet:
+                                    <input id="alphabet2" class="input is-info is-normal" type="text"
+                                        placeholder="Alphabet input">
+                                    <p class="help is-info">Separate with commas</p>
+                                </div>
+    
+                                <h3 class="has-text-left">Third step.- Write your alpha and beta values to cipher or you
+                                    can generate a randomly
+                                </h3>
+                                <div id="usuarioLlaveX">
+                                    <div class="columns">
+                                        <div class="column">
+                                            Please write your alpha value:
+                                            <input id="alphaV2" class="input is-info is-normal" type="number"
+                                                placeholder="Alpha input">
+                                        </div>
+                                        <div class="column">
+                                            Please write your beta value:
+                                            <input id="betaV2" class="input is-info is-normal" type="number"
+                                                placeholder="Beta input">
+                                        </div>
+                                    </div>
+                                </div>
+                                <h3 class="has-text-left">Fourth step.- Cypher</h3>
+                                <p> Please click in the next button to cypher the txt file with the key that has you been
+                                chosen:</p>
+                                <form id="formDecipher" onsubmit="return Descifrar(this)">
+                                    <input class="button is-info" type="submit" value="Let's go decipher">
+                                </form>
+                                {% if messages %}
+                                <br />
+                                {% for message in messages %}
+                                {% if "DecipherM" in message.extra_tags %}
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                <div class="notification is-danger">
+                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                <div class="notification is-success">
+                                {% endif %}
+                                    <button class="delete"></button>
+                                    <strong>
+                                        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                                            {{message}}
+                                            </li>
+                                    </strong>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END ARTICLE -->
+
+                    <!-- START PROMO BLOCK -->
+                    <section class="hero is-info is-bold is-small promo-block">
+                        <div class="hero-body">
+                            <div class="container">
+                                <div class="columns">
+                                    <div class="column">
+                                        <span class="tag is-black is-medium is-rounded">
+                                            Student: Chacon Inostrosa Jaime Enrique
+                                        </span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="tag is-black is-medium is-rounded">
+                                            Student: Ramirez Olvera Guillermo
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="columns">
+                                    <div class="column">
+                                        <span class="tag is-black is-medium is-rounded">
+                                            Student: Sanchez Mendez Edmundo Josue
+                                        </span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="tag is-black is-medium is-rounded">
+                                            Teacher: Cortez Duarte Nidia Asunción
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+                    <!-- END PROMO BLOCK -->
+                </div>
+        </section>
+        <!-- END ARTICLE FEED -->
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.9.1/js/OverlayScrollbars.min.js'></script>
+    <script async type="text/javascript" src="https://bulmatemplates.github.io/bulma-templates/js/bulma.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            //The first argument are the elements to which the plugin shall be initialized
+            //The second argument has to be at least a empty object or a object with your desired options
+            OverlayScrollbars(document.querySelectorAll("body"), {});
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                const $notification = $delete.parentNode;
+
+                $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                });
+            });
+        });
+
+        var input = document.getElementById('file-upload');
+        var infoArea = document.getElementById('file-upload-filename');
+        input.addEventListener('change', showFileName);
+
+        var tLlave = 0 //random
+        var tAlfabeto = 0 //Ingles
+        function showFileName(event) {
+            var input = event.srcElement;
+            var fileName = input.files[0].name;
+            infoArea.textContent = fileName;
+        }
+
+        function verLlave() {
+            var x = document.getElementById("tipoLlave").value;
+            if (x == 1) {
+                document.getElementById("usuarioLlave").style.display = "block";
+                tLlave = 1;
+            } else {
+                document.getElementById("usuarioLlave").style.display = "none";
+                tLlave = 0;
+            }
+        }
+
+        function verAlphabet() {
+            var y = document.getElementById("tipoAlphabet").value;
+            if (y == 1) {
+                document.getElementById("usuarioAlfabeto").style.display = "block";
+            } else {
+                document.getElementById("usuarioAlfabeto").style.display = "none";
+            }
+            tAlfabeto = y;
+        }
+
+        function verAlphabet2() {
+            var y = document.getElementById("tipoAlphabet2").value;
+            if (y == 1) {
+                document.getElementById("usuarioAlfabeto2").style.display = "block";
+            } else {
+                document.getElementById("usuarioAlfabeto2").style.display = "none";
+            }
+            tAlfabeto = y;
+        }
+        
+        function Cifrar(form) {
+            var alpha = document.getElementById('alphaV').value
+            var beta = document.getElementById('betaV').value
+            var Alfabetos = ['EN', 'NO', 'ESP', 'ASCII', 'D']
+            var alfabetoUsar = Alfabetos[tAlfabeto]
+            if (tLlave !== 1) {
+                alpha = "777"
+                beta = "777"
+            }
+            if (tAlfabeto == 1) {
+                alfabetoUsar = document.getElementById('alphabetIN').value
+            }
+            form.action = "../CypherTxtAffine/" + infoArea.textContent + "/" + alpha + "/" + beta + "/" + alfabetoUsar
+            return true
+        }
+        var input2 = document.getElementById('file-upload2');
+        var infoArea2 = document.getElementById('file-upload-filename2');
+
+        input2.addEventListener('change', showFileName2);
+
+        function showFileName2(event) {
+            var input2 = event.srcElement;
+            var fileName = input2.files[0].name;
+            infoArea2.textContent = fileName;
+        }
+
+        function Descifrar(form) {
+            var alpha = document.getElementById('alphaV2').value
+            var beta = document.getElementById('betaV2').value
+            var Alfabetos = ['EN', 'NO' , 'ESP', 'ASCII', 'D']
+            if (tAlfabeto == 1) {
+                alfabetoUsar = document.getElementById('alphabet2').value
+            } else {
+                alfabetoUsar = Alfabetos[tAlfabeto]
+            }
+            form.action = "../DecipherTxtAffine/" + infoArea2.textContent + "/" + alpha + "/" + beta + "/" + alfabetoUsar
+            return true
+        }
+
+    </script>
+</body>
+
+</html>

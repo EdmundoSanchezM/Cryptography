@@ -156,7 +156,11 @@
                             <br />
                             {% for message in messages %}
                             {% if "CypherM" in message.extra_tags %}
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                            <div class="notification is-danger">
+                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
                             <div class="notification is-success">
+                            {% endif %}
                                 <button class="delete"></button>
                                 <strong>
                                     <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
@@ -214,7 +218,11 @@
                             <br />
                             {% for message in messages %}
                             {% if "DecipherM" in message.extra_tags %}
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                            <div class="notification is-danger">
+                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
                             <div class="notification is-success">
+                            {% endif %}
                                 <button class="delete"></button>
                                 <strong>
                                     <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>

@@ -15,16 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from example.views import MainPage, VigenerePage, CifrarVigenere, DescifrarVigenere ,CifrarTxt, DescifrarPage, DescifrarTxt
+from example.views import MainPage, VigenerePage, CifrarVigenere, DescifrarVigenere, AffinePage, CifrarAffine, DescifrarAffine
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('', MainPage, name='index'),
     path('Vigenere/', VigenerePage, name='vigenere'),
-    path('Affine/', DescifrarPage, name='descipher'),
+    path('Affine/', AffinePage, name='affine'),
     path('CypherTxtVigenere/<filetxt>/<key>', CifrarVigenere),
     path('DecipherTxtVigenere/<filetxt>/<key>', DescifrarVigenere),
-    path('DecipherTxt/<filetxt>/<privatekey>',DescifrarTxt),
+    path('CypherTxtAffine/<filetxt>/<a>/<b>/<alphabet>', CifrarAffine),
+    path('DecipherTxtAffine/<filetxt>/<a>/<b>/<alphabet>', DescifrarAffine)
+
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -1,0 +1,2 @@
+Mensaje con ASCII
+Es decir, acepta vario carácteres.
