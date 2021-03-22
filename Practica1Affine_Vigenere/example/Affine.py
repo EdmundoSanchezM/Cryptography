@@ -101,7 +101,7 @@ def Decrypt(archivo, alphabet, alpha, beta):
         elif alphabet == "ASCII":
             alfabeto = [chr(i) for i in range(256)]
             bandera = False
-        inversoalpha = euclides(len(alfabeto),alpha)
+        inversoalpha = euclides(len(alfabeto),alpha)#inverso = pow(a, -1, len(alfabeto))
         minusbeta = InversoAditivo(beta,len(alfabeto))
         textoDescifrado = ""
         if bandera:
@@ -116,22 +116,3 @@ def Decrypt(archivo, alphabet, alpha, beta):
         return "Decipher made successfully, plese check your directory"
     except:
         return "Error Decryption"
-
-def main():
-    alfabeto = "abcdefghijklmnopqrstuvwxyz"
-    print("Ingrese a (multiplicador)")
-    a=int(input())
-    print("Ingrese b (aditivo)")
-    b=int(input())
-    if(mcd(a,len(alfabeto))==1 and a<len(alfabeto)):
-        inverso = euclides(len(alfabeto),a)
-        print("El inverso multiplicativo de "+str(a)+" es: "+str(inverso))
-        e = Encrypt("cryptographyclass", alfabeto,a,b)
-        xd = InversoAditivo(b,len(alfabeto))
-        #inverso = pow(a, -1, len(alfabeto))
-        d = Decrypt(e,alfabeto,inverso, xd)
-        print(e)
-        print(d)
-    else:
-        print("Llave no valida\nRecuerde que a y la longitud del alfabeto deben ser primos relativos")
-#Como precondiciones esta que el usuario haya selecionado un alfabeto
