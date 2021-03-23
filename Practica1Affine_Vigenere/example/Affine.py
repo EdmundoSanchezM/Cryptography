@@ -83,7 +83,7 @@ def Encrypt(archivo, alphabet, alpha, beta):
         return "Alpha value not valid"
 
 def InversoAditivo(beta,n):
-    return int(n-beta)
+    return int(n-beta%n)
 
 def Decrypt(archivo, alphabet, alpha, beta):
     try:
