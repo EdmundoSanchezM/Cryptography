@@ -55,7 +55,16 @@ def Encrypt(archivo, alphabet, alpha, beta):
     mensaje = "Cypher made successfully plese check your directory"
     alfabeto = "abcdefghijklmnopqrstuvwxyz "
     bandera = True
-    if ',' in alphabet:
+    esNumero = False
+    try:
+        numero = int(alphabet)
+        esNumero = True
+    except:
+        esNumero = False
+    if esNumero:
+        alfabeto = [chr(i) for i in range(int(alphabet))]
+        bandera = False
+    elif ',' in alphabet:
         alfabeto = alphabet.replace(',', '')
     elif alphabet == "ES":
         alfabeto = "abcdefghijklmnñopqrstuvwxyz "
@@ -92,7 +101,16 @@ def Decrypt(archivo, alphabet, alpha, beta):
         f.close()
         alfabeto = "abcdefghijklmnopqrstuvwxyz "
         bandera = True
-        if ',' in alphabet:
+        esNumero = False
+        try:
+            numero = int(alphabet)
+            esNumero = True
+        except:
+            esNumero = False
+        if esNumero:
+            alfabeto = [chr(i) for i in range(int(alphabet))]
+            bandera = False
+        elif ',' in alphabet:
             alfabeto = alphabet.replace(',', '')
         elif alphabet == "ES":
             alfabeto = "abcdefghijklmnñopqrstuvwxyz "

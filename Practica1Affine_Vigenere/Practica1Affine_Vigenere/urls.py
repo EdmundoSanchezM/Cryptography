@@ -26,7 +26,6 @@ urlpatterns = [
     path('DecipherTxtVigenere/<filetxt>/<key>', DescifrarVigenere),
     path('CypherTxtAffine/<filetxt>/<a>/<b>/<alphabet>', CifrarAffine),
     path('DecipherTxtAffine/<filetxt>/<a>/<b>/<alphabet>', DescifrarAffine)
-
 ]
 
 urlpatterns += staticfiles_urlpatterns()
