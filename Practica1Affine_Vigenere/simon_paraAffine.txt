@@ -1,4 +1,4 @@
-™	Œ?ò$3×YÓ the analysis of letter frequencies, other patterns can also be detected that may help to decipher a piece of ciphertext.
+As well as the analysis of letter frequencies, other patterns can also be detected that may help to decipher a piece of ciphertext.
 
 The following text explains some of the clues that can be used to deduce a word or a letter in a piece of ciphertext. If you scroll further down the page, you will see a list of tables that explain letter frequencies and patterns in other languages. This will prove useful for breaking messages not written in English.
 

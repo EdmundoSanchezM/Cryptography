@@ -3,10 +3,25 @@ import random
 import os
 script_dir = os.path.dirname(__file__) 
 
-def mcd(a, b):
+def extendidoEuclides(a, b):
     if b == 0:
-        return a
-    return mcd(b,a%b)
+        return 0,1,0
+    u0 = 1
+    u1 = 0
+    v0 = 0
+    v1 = 1
+    while b != 0:
+        q = a//b
+        r = a - b * q
+        u = u0 - q * u1
+        v = v0 - q * v1
+        a = b
+        b = r
+        u0 = u1
+        u1 = u
+        v0 = v1
+        v1 = v
+    return  a, u0, v0
 
 def generateRandom(longitud):
     m = []
@@ -14,39 +29,19 @@ def generateRandom(longitud):
         m.append(i)
     maux = []
     for i in m:
-        if(mcd(i,longitud)==1):
+        if(extendidoEuclides(i,longitud)[0]==1):
             maux.append(i)
     return random.choice(maux),random.randint(0,longitud)
 
-def euclides(divisor, dividendo):
-    inverso = True
-    gx = divisor
-    gy = dividendo
-    u1 = 1
-    u2 = 0
-    v1 = 0
-    v2 = 1
-    u = 0
-    v = 1
-    while(dividendo != 0):
-        q = floor(divisor / dividendo)
-        r = divisor % dividendo
-        divisor = dividendo
-        dividendo = r
-        if (r != 0):
-            u = u1 - q * u2
-            v = v1 - q * v2
-            u1 = u2
-            v1 = v2
-            u2 = u
-            v2 = v
-    sv = v
-    if (sv < 0):
-        sv = gx + sv
-    if(inverso):
-        return sv
+def inversoMultiplicativo(n, a):
+    mcd , u , v = extendidoEuclides(a,n)
+    if mcd != 1:
+        print("No existe inverso")
+        return 0
+    if u>0:
+        return u
     else:
-        return divisor
+        return n+u
 
 def Encrypt(archivo, alphabet, alpha, beta):
     f=open(archivo,"r")
@@ -76,18 +71,21 @@ def Encrypt(archivo, alphabet, alpha, beta):
     if(alpha == 777 and beta == 777):
         alpha,beta = generateRandom(len(alfabeto))
         mensaje += ", alpha value = " + str(alpha) + " beta value = " + str(beta) 
-    if(mcd(alpha,len(alfabeto))==1 and alpha<len(alfabeto)):
+    if(extendidoEuclides(alpha,len(alfabeto))[0]==1 and alpha<len(alfabeto)):
         textoCifrado = ""
-        if bandera:
-            for p in texto:
-                textoCifrado += alfabeto[((alpha * alfabeto.find(p) )+ beta) % len(alfabeto)]
-        else:
-            for p in texto:
-                textoCifrado += alfabeto[((alpha * alfabeto.index(p) )+ beta) % len(alfabeto)]
-        f = open("encrypt.aff","w",encoding="iso-8859-1")
-        f.write(textoCifrado)
-        f.close
-        return mensaje
+        try: 
+            if bandera:
+                for p in texto:
+                    textoCifrado += alfabeto[((alpha * alfabeto.find(p) )+ beta) % len(alfabeto)]
+            else:
+                for p in texto:
+                    textoCifrado += alfabeto[((alpha * alfabeto.index(p) )+ beta) % len(alfabeto)]
+            f = open("encrypt.aff","w",encoding="iso-8859-1")
+            f.write(textoCifrado)
+            f.close
+            return mensaje
+        except:
+            return "Error encrypting"
     else:
         return "Alpha value not valid"
 
@@ -119,7 +117,7 @@ def Decrypt(archivo, alphabet, alpha, beta):
         elif alphabet == "ASCII":
             alfabeto = [chr(i) for i in range(256)]
             bandera = False
-        inversoalpha = euclides(len(alfabeto),alpha)
+        inversoalpha = inversoMultiplicativo(len(alfabeto),alpha)
         minusbeta = InversoAditivo(beta,len(alfabeto))
         textoDescifrado = ""
         if bandera:
@@ -134,22 +132,3 @@ def Decrypt(archivo, alphabet, alpha, beta):
         return "Decipher made successfully, plese check your directory"
     except:
         return "Error Decryption"
-
-def main():
-    alfabeto = "abcdefghijklmnopqrstuvwxyz"
-    print("Ingrese a (multiplicador)")
-    a=int(input())
-    print("Ingrese b (aditivo)")
-    b=int(input())
-    if(mcd(a,len(alfabeto))==1 and a<len(alfabeto)):
-        inverso = euclides(len(alfabeto),a)
-        print("El inverso multiplicativo de "+str(a)+" es: "+str(inverso))
-        e = Encrypt("cryptographyclass", alfabeto,a,b)
-        xd = InversoAditivo(b,len(alfabeto))
-        #inverso = pow(a, -1, len(alfabeto))
-        d = Decrypt(e,alfabeto,inverso, xd)
-        print(e)
-        print(d)
-    else:
-        print("Llave no valida\nRecuerde que a y la longitud del alfabeto deben ser primos relativos")
-#Como precondiciones esta que el usuario haya selecionado un alfabeto
