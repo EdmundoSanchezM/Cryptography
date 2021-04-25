@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Practice 1 - Vigenére cipher & Affine cipher</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/escom.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet'
+        href='https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.9.1/css/OverlayScrollbars.min.css'>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <!-- Bulma Version 0.9.0-->
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.min.css" id="theme-styles">
+    <script src="https://code.jquery.com/jquery-2.2.4.js"
+        integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/6cff7f6120.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+
+<body>
+    <!-- START NAV -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item">
+                    <img src="../static/escom.png" alt="Logo">
+                </a>
+                <span class="navbar-burger burger" data-target="navbarMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </div>
+            <div id="navbarMenu" class="navbar-menu">
+                <div class="navbar-end">
+
+                    <a class="navbar-item" href="../">
+                        Home
+                    </a>
+                    <a class="navbar-item is-active">
+                        AES Implementation
+                    </a>
+                    <!--
+                        <a class="navbar-item">
+                            Features
+                        </a>
+                    <a class="navbar-item">
+                            Team
+                        </a>
+                    <a class="navbar-item">
+                            Archives
+                        </a>
+                    <a class="navbar-item">
+                            Help
+                        </a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                                Account
+                            </a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item">
+                                    Dashboard
+                                </a>
+                            <a class="navbar-item">
+                                    Profile
+                                </a>
+                            <a class="navbar-item">
+                                    Settings
+                                </a>
+                            <hr class="navbar-divider">
+                            <div class="navbar-item">
+                                Logout
+                            </div>
+                    -->
+
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </nav>
+    <!-- END NAV -->
+
+    <section class="hero is-info is-medium is-bold"
+        style="background-image:url('../static/HomeBanner.jpg'); background-size: 100% 100%; ">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title  has-text-white">AES-128 bits</h1>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="container">
+        <!-- START ARTICLE FEED -->
+        <section class="articles">
+            <div class="column is-8 is-offset-2">
+
+                <!-- START ARTICLE -->
+                <div class="card article">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content has-text-centered">
+                                <p class="title article-title">Cypher an image file</p>
+                            </div>
+                        </div>
+
+                        <div class="content article-body">
+                            <h3 class="has-text-left">First step.- Choose an image file from your computer to cypher
+                            </h3>
+                            <div class="file has-name">
+                                <label class="file-label">
+                                    <input class="file-input" accept="image/*" id="file-upload" type="file"
+                                        name="resume">
+                                    <span class="file-cta">
+                                        <span class="file-icon">
+                                            <i class="fas fa-upload"></i>
+                                        </span>
+                                        <span class="file-label">
+                                            Choose an image file…
+                                        </span>
+                                    </span>
+                                    <span for="file-upload" id="file-upload-filename" class="file-name">
+                                    </span>
+                                </label>
+                            </div>
+
+                            <h3 class="has-text-left">Second step.- Select a mode of operation and fill the parameters
+                            </h3>
+                            <p>Please select an option</p>
+                            <div class="select is-info">
+                                <select id="tipoCifrado" onchange="verLlave()">
+                                    <option>Mode of operation</option>
+                                    <option value="0">ECB</option>
+                                    <option value="1">CBC</option>
+                                    <option value="2">CFB</option>
+                                    <option value="3">OFB</option>
+                                </select>
+                            </div>
+                            <div id="ECB" style="display:none">
+                                <br>
+                                Please write your password of 16 characters:
+                                <input id="ECB_pass" class="input is-info is-normal" maxlength="16" type="text"
+                                    placeholder="Password">
+                            </div>
+                            <div id="CBC" style="display:none">
+                                <br>
+                                Please write your password of 16 characters:
+                                <input id="CBC_pass" class="input is-info is-normal" maxlength="16" type="text"
+                                    placeholder="Password">
+                                <br>
+                                Please write your initialization vector of 16 characters:
+                                <input id="CBC_ivec" class="input is-info is-normal" maxlength="16" type="text"
+                                    placeholder="initialization vector">
+                            </div>
+                            <div id="CFB" style="display:none">
+                                <br>
+                                Please write your password of 16 characters:
+                                <input id="CFB_pass" class="input is-info is-normal" maxlength="16" type="text"
+                                    placeholder="Password">
+                                <br>
+                                Please write your initialization vector of 16 characters:
+                                <input id="CFB_ivec" class="input is-info is-normal" maxlength="16" type="text"
+                                    placeholder="initialization vector">
+                            </div>
+                            <div id="OFB" style="display:none">
+                                <br>
+                                Please write your password of 16 characters:
+                                <input id="OFB_pass" class="input is-info is-normal" maxlength="16" type="text"
+                                    placeholder="Password">
+                                <br>
+                                Please write your initialization vector of 16 characters:
+                                <input id="OFB_ivec" class="input is-info is-normal" maxlength="16" type="text"
+                                    placeholder="initialization vector">
+                            </div>
+                            <h3 class="has-text-left">Third step.- Cypher</h3>
+                            <p> Please click in the next button to cypher the image file with the parameters:</p>
+                            <form id="formCypher" onsubmit="return Cifrar(this)">
+                                <input class="button is-info" type="submit" value="Let's go cypher">
+                            </form>
+                            {% if messages %}
+                            <br />
+                            {% for message in messages %}
+                            {% if "CypherM" in message.extra_tags %}
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                            <div class="notification is-danger">
+                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                <div class="notification is-success">
+                                    {% endif %}
+                                    <button class="delete"></button>
+                                    <strong>
+                                        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                                            {{message.message}}
+                                            </li>
+                                    </strong>
+                                </div>
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                <div class="notification">
+                                    <button class="delete"></button>
+                                    <img style="display: block;
+                                    margin-left: auto;
+                                    margin-right: auto;" src="../static/{{message.message | slice:" 102:116" | safe}} ">
+                                </div>
+                                {% endif %}
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END ARTICLE -->
+
+                    <!-- START ARTICLE -->
+                    <div class=" card article">
+                                    <div class="card-content">
+                                        <div class="media">
+                                            <div class="media-content has-text-centered">
+                                                <p class="title article-title">Decipher a image file</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="content article-body">
+                                            <h3 class="has-text-left">First step.- Choose a cipher image file from your
+                                                computer
+                                                to
+                                                decipher
+                                            </h3>
+                                            <div class="file has-name">
+                                                <label class="file-label">
+                                                    <input class="file-input" id="file-upload2" type="file"
+                                                        name="resume">
+                                                    <span class="file-cta">
+                                                        <span class="file-icon">
+                                                            <i class="fas fa-upload"></i>
+                                                        </span>
+                                                        <span class="file-label">
+                                                            Choose an image file…
+                                                        </span>
+                                                    </span>
+                                                    <span for="file-upload" id="file-upload-filename2"
+                                                        class="file-name">
+                                                    </span>
+                                                </label>
+                                            </div>
+
+                                            <h3 class="has-text-left">Second step.- Select a mode of operation and fill
+                                                the parameters
+                                            </h3>
+                                            <p>Please select an option</p>
+                                            <div class="select is-info">
+                                                <select id="tipoDescifrado" onchange="verLlave2()">
+                                                    <option>Mode of operation</option>
+                                                    <option value="0">ECB</option>
+                                                    <option value="1">CBC</option>
+                                                    <option value="2">CFB</option>
+                                                    <option value="3">OFB</option>
+                                                </select>
+                                            </div>
+                                            <div id="ECB2" style="display:none">
+                                                <br>
+                                                Please write your password of 16 characters:
+                                                <input id="ECB_pass2" class="input is-info is-normal" maxlength="16"
+                                                    type="text" placeholder="Password">
+                                            </div>
+                                            <div id="CBC2" style="display:none">
+                                                <br>
+                                                Please write your password of 16 characters:
+                                                <input id="CBC_pass2" class="input is-info is-normal" maxlength="16"
+                                                    type="text" placeholder="Password">
+                                                <br>
+                                                Please write your initialization vector of 16 characters:
+                                                <input id="CBC_ivec2" class="input is-info is-normal" maxlength="16"
+                                                    type="text" placeholder="initialization vector">
+                                            </div>
+                                            <div id="CFB2" style="display:none">
+                                                <br>
+                                                Please write your password of 16 characters:
+                                                <input id="CFB_pass2" class="input is-info is-normal" maxlength="16"
+                                                    type="text" placeholder="Password">
+                                                <br>
+                                                Please write your initialization vector of 16 characters:
+                                                <input id="CFB_ivec2" class="input is-info is-normal" maxlength="16"
+                                                    type="text" placeholder="initialization vector">
+                                            </div>
+                                            <div id="OFB2" style="display:none">
+                                                <br>
+                                                Please write your password of 16 characters:
+                                                <input id="OFB_pass2" class="input is-info is-normal" maxlength="16"
+                                                    type="text" placeholder="Password">
+                                                <br>
+                                                Please write your initialization vector of 16 characters:
+                                                <input id="OFB_ivec2" class="input is-info is-normal" maxlength="16"
+                                                    type="text" placeholder="initialization vector">
+                                            </div>
+
+                                            <h3 class="has-text-left">Third step.- Decipher</h3>
+                                            <p> Please click in the next button to decipher the image file with the
+                                                parameters:</p>
+                                            <form id="formDecipher" onsubmit="return Descifrar(this)">
+                                                <input class="button is-info" type="submit" value="Let's go decipher">
+                                            </form>
+                                            {% if messages %}
+                                            <br />
+                                            {% for message in messages %}
+                                            {% if "DecipherM" in message.extra_tags %}
+                                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                            <div class="notification is-danger">
+                                                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                                <div class="notification is-success">
+                                                    {% endif %}
+                                                    <button class="delete"></button>
+                                                    <strong>
+                                                        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                                                            {{message.message}}
+                                                            </li>
+                                                    </strong>
+                                                </div>
+                                                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                                <div class="notification">
+                                                    <button class="delete"></button>
+                                                    <img style="display: block;
+                                                    margin-left: auto;
+                                                    margin-right: auto;" src="../static/{{message.message | slice:" 104:123" | safe}} ">
+                                                </div>
+                                                {% endif %}
+                                                {% endif %}
+                                                {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END ARTICLE -->
+
+                                    <!-- START PROMO BLOCK -->
+                                    <section class=" hero is-info is-bold is-small promo-block">
+                                                    <div class="hero-body">
+                                                        <div class="container">
+                                                            <div class="columns">
+                                                                <div class="column">
+                                                                    <span class="tag is-black is-medium is-rounded">
+                                                                        Student: Chacon Inostrosa Jaime Enrique
+                                                                    </span>
+                                                                </div>
+                                                                <div class="column">
+                                                                    <span class="tag is-black is-medium is-rounded">
+                                                                        Student: Ramirez Olvera Guillermo
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="columns">
+                                                                <div class="column">
+                                                                    <span class="tag is-black is-medium is-rounded">
+                                                                        Student: Sanchez Mendez Edmundo Josue
+                                                                    </span>
+                                                                </div>
+                                                                <div class="column">
+                                                                    <span class="tag is-black is-medium is-rounded">
+                                                                        Teacher: Cortez Duarte Nidia Asunción
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+        </section>
+        <!-- END PROMO BLOCK -->
+    </div>
+    </section>
+    <!-- END ARTICLE FEED -->
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.9.1/js/OverlayScrollbars.min.js'></script>
+    <script async type="text/javascript" src="https://bulmatemplates.github.io/bulma-templates/js/bulma.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            //The first argument are the elements to which the plugin shall be initialized
+            //The second argument has to be at least a empty object or a object with your desired options
+            OverlayScrollbars(document.querySelectorAll("body"), {});
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                const $notification = $delete.parentNode;
+
+                $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                });
+            });
+        });
+
+        var input = document.getElementById('file-upload');
+        var infoArea = document.getElementById('file-upload-filename');
+        input.addEventListener('change', showFileName);
+
+        var tCifrado = -1 //random
+
+        function showFileName(event) {
+            var input = event.srcElement;
+            var fileName = input.files[0].name;
+            infoArea.textContent = fileName;
+        }
+
+        function verLlave() {
+            var x = document.getElementById("tipoCifrado").value;
+            tCifrado = x
+            document.getElementById("ECB").style.display = "none";
+            document.getElementById("CBC").style.display = "none";
+            document.getElementById("CFB").style.display = "none";
+            document.getElementById("OFB").style.display = "none";
+            if (x == 0) {
+                document.getElementById("ECB").style.display = "block";
+            } else if (x == 1) {
+                document.getElementById("CBC").style.display = "block";
+            } else if (x == 2) {
+                document.getElementById("CFB").style.display = "block";
+            } else if (x == 3) {
+                document.getElementById("OFB").style.display = "block";
+            }
+        }
+
+        function Cifrar(form) {
+            if (infoArea.textContent.length == 37) {
+                swal("Are you sure?", "You need a image :)", "error");
+                return false
+            }
+            if (tCifrado == 0) {
+                var password = document.getElementById("ECB_pass").value;
+                if (password.length < 16) {
+                    swal("Incorrect length of password", "Please write a password of 16 characters", "error");
+                    return false
+                } else {
+                    form.action = "../CypherAES/" + infoArea.textContent + "/" + tCifrado + "/" + password + "/" + "0"
+                    return true
+                }
+            } else if (tCifrado == 1) {
+                var password = document.getElementById('CBC_pass').value
+                var vectorInicializacion = document.getElementById('CBC_ivec').value
+                if (password.length < 16) {
+                    swal("Incorrect length of password", "Please write a password of 16 characters", "error");
+                    return false
+                } else if (vectorInicializacion.length < 16) {
+                    swal("Incorrect length of initialization vector", "Please write a initialization vector of 16 characters", "error");
+                    return false
+                } else {
+                    form.action = "../CypherAES/" + infoArea.textContent + "/" + tCifrado + "/" + password + "/" + vectorInicializacion
+                    return true
+                }
+            } else if (tCifrado == 2) {
+                var password = document.getElementById('CFB_pass').value
+                var vectorInicializacion = document.getElementById('CFB_ivec').value
+                if (password.length < 16) {
+                    swal("Incorrect length of password", "Please write a password of 16 characters", "error");
+                    return false
+                } else if (vectorInicializacion.length < 16) {
+                    swal("Incorrect length of initialization vector", "Please write a initialization vector of 16 characters", "error");
+                    return false
+                } else {
+                    form.action = "../CypherAES/" + infoArea.textContent + "/" + tCifrado + "/" + password + "/" + vectorInicializacion
+                    return true
+                }
+            } else if (tCifrado == 3) {
+                var password = document.getElementById('OFB_pass').value
+                var vectorInicializacion = document.getElementById('OFB_ivec').value
+                if (password.length < 16) {
+                    swal("Incorrect length of password", "Please write a password of 16 characters", "error");
+                    return false
+                } else if (vectorInicializacion.length < 16) {
+                    swal("Incorrect length of initialization vector", "Please write a initialization vector of 16 characters", "error");
+                    return false
+                } else {
+                    form.action = "../CypherAES/" + infoArea.textContent + "/" + tCifrado + "/" + password + "/" + vectorInicializacion
+                    return true
+                }
+            } else {
+                swal("Are you sure?", "You need to use a mode of operation :)", "error");
+                return false
+            }
+        }
+
+        var input2 = document.getElementById('file-upload2');
+        var infoArea2 = document.getElementById('file-upload-filename2');
+
+        input2.addEventListener('change', showFileName2);
+
+        function showFileName2(event) {
+            var input2 = event.srcElement;
+            var fileName = input2.files[0].name;
+            infoArea2.textContent = fileName;
+        }
+
+        var tDescifrado = -1 //random
+
+        function showFileName(event) {
+            var input = event.srcElement;
+            var fileName = input.files[0].name;
+            infoArea.textContent = fileName;
+        }
+
+        function verLlave2() {
+            var x = document.getElementById("tipoDescifrado").value;
+            tDescifrado = x
+            document.getElementById("ECB2").style.display = "none";
+            document.getElementById("CBC2").style.display = "none";
+            document.getElementById("CFB2").style.display = "none";
+            document.getElementById("OFB2").style.display = "none";
+            if (x == 0) {
+                document.getElementById("ECB2").style.display = "block";
+            } else if (x == 1) {
+                document.getElementById("CBC2").style.display = "block";
+            } else if (x == 2) {
+                document.getElementById("CFB2").style.display = "block";
+            } else if (x == 3) {
+                document.getElementById("OFB2").style.display = "block";
+            }
+        }
+
+        function Descifrar(form) {
+            if (infoArea2.textContent.length == 37) {
+                swal("Are you sure?", "You need a image :)", "error");
+                return false
+            }
+            if (tDescifrado == 0) {
+                var password = document.getElementById("ECB_pass2").value;
+                if (password.length < 16) {
+                    swal("Incorrect length of password", "Please write a password of 16 characters", "error");
+                    return false
+                } else {
+                    form.action = "../DecipherAES/" + infoArea2.textContent + "/" + tDescifrado + "/" + password + "/" + "0"
+                    return true
+                }
+            } else if (tDescifrado == 1) {
+                var password = document.getElementById('CBC_pass2').value
+                var vectorInicializacion = document.getElementById('CBC_ivec2').value
+                if (password.length < 16) {
+                    swal("Incorrect length of password", "Please write a password of 16 characters", "error");
+                    return false
+                } else if (vectorInicializacion.length < 16) {
+                    swal("Incorrect length of initialization vector", "Please write a initialization vector of 16 characters", "error");
+                    return false
+                } else {
+                    form.action = "../DecipherAES/" + infoArea2.textContent + "/" + tDescifrado + "/" + password + "/" + vectorInicializacion
+                    return true
+                }
+            } else if (tDescifrado == 2) {
+                var password = document.getElementById('CFB_pass2').value
+                var vectorInicializacion = document.getElementById('CFB_ivec2').value
+                if (password.length < 16) {
+                    swal("Incorrect length of password", "Please write a password of 16 characters", "error");
+                    return false
+                } else if (vectorInicializacion.length < 16) {
+                    swal("Incorrect length of initialization vector", "Please write a initialization vector of 16 characters", "error");
+                    return false
+                } else {
+                    form.action = "../DecipherAES/" + infoArea2.textContent + "/" + tDescifrado + "/" + password + "/" + vectorInicializacion
+                    return true
+                }
+            } else if (tDescifrado == 3) {
+                var password = document.getElementById('OFB_pass2').value
+                var vectorInicializacion = document.getElementById('OFB_ivec2').value
+                if (password.length < 16) {
+                    swal("Incorrect length of password", "Please write a password of 16 characters", "error");
+                    return false
+                } else if (vectorInicializacion.length < 16) {
+                    swal("Incorrect length of initialization vector", "Please write a initialization vector of 16 characters", "error");
+                    return false
+                } else {
+                    form.action = "../DecipherAES/" + infoArea2.textContent + "/" + tDescifrado + "/" + password + "/" + vectorInicializacion
+                    return true
+                }
+            } else {
+                swal("Are you sure?", "You need to use a mode of operation :)", "error");
+                return false
+            }
+        }
+
+    </script>
+</body>
+
+</html>
