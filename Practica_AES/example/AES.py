@@ -24,9 +24,9 @@ def encrypt_ECB(password,orig_file):
         padded_bytes = pad_message(bytestoEncrypt)
         encryptBytes = cipher.encrypt(padded_bytes)
         encrypted_file = header + encryptBytes
-        with open('assets/image_eECB.bmp','wb') as e:
+        with open('assets/'+orig_file[0:7]+'_eECB.bmp','wb') as e:
             e.write(encrypted_file)
-        return "Cipher made successfully, the result is below this message and in the directory assets with the name 'image_eECB.bmp'"
+        return "Cipher made successfully, the result is below this message and in the directory assets with the name '"+orig_file[0:7]+"_eECB.bmp'"
     except:
         return "Something went wrong"
 
@@ -38,9 +38,9 @@ def decrypt_ECB(password,orig_file):
         header, bytestoDecrypt = manage_Image(orig_file)
         decryptBytes = cipher.decrypt(bytestoDecrypt)
         decrypted_file = header + decryptBytes
-        with open('assets/image_eECB_dECB.bmp','wb') as e:
+        with open('assets/'+orig_file[0:12]+'_dECB.bmp','wb') as e:
             e.write(decrypted_file)
-        return "Decipher made successfully, the result is below this message and in the directory assets with the name 'image_eECB_dECB.bmp'"
+        return "Decipher made successfully, the result is below this message and in the directory assets with the name '"+orig_file[0:12]+"_dECB.bmp'"
     except:
         return "Something went wrong"
 
@@ -53,9 +53,9 @@ def encrypt_CBC(password, IV, orig_file):
         padded_bytes = pad_message(bytestoEncrypt)
         encryptBytes = cipher.encrypt(padded_bytes)
         encrypted_file = header + encryptBytes
-        with open('assets/image_eCBC.bmp','wb') as e:
+        with open('assets/'+orig_file[0:7]+'_eCBC.bmp','wb') as e:
             e.write(encrypted_file)
-        return "Cipher made successfully, the result is below this message and in the directory assets with the name 'image_eCBC.bmp'"
+        return "Cipher made successfully, the result is below this message and in the directory assets with the name '"+orig_file[0:7]+"_eCBC.bmp'"
     except:
         return "Something went wrong"
 
@@ -67,9 +67,9 @@ def decrypt_CBC(password, IV, orig_file):
         header, bytestoDecrypt = manage_Image(orig_file)
         decryptBytes = cipher.decrypt(bytestoDecrypt)
         decrypted_file = header + decryptBytes
-        with open('assets/image_eCBC_dCBC.bmp','wb') as e:
+        with open('assets/'+orig_file[0:12]+'_dCBC.bmp','wb') as e:
             e.write(decrypted_file)
-        return "Decipher made successfully, the result is below this message and in the directory assets with the name 'image_eCBC_dCBC.bmp'"
+        return "Decipher made successfully, the result is below this message and in the directory assets with the name '"+orig_file[0:12]+"_dCBC.bmp'"
     except:
         return "Something went wrong"
 
@@ -82,9 +82,9 @@ def encrypt_CFB(password, IV, orig_file):
         padded_bytes = pad_message(bytestoEncrypt)
         encryptBytes = cipher.encrypt(padded_bytes)
         encrypted_file = header + encryptBytes
-        with open('assets/image_eCFB.bmp','wb') as e:
+        with open('assets/'+orig_file[0:7]+'_eCFB.bmp','wb') as e:
             e.write(encrypted_file)
-        return "Cipher made successfully, the result is below this message and in the directory assets with the name 'image_eCFB.bmp'"
+        return "Cipher made successfully, the result is below this message and in the directory assets with the name '"+orig_file[0:7]+"_eCFB.bmp'"
     except:
         return "Something went wrong"
 
@@ -96,9 +96,9 @@ def decrypt_CFB(password, IV, orig_file):
         header, bytestoDecrypt = manage_Image(orig_file)
         decryptBytes = cipher.decrypt(bytestoDecrypt)
         decrypted_file = header + decryptBytes
-        with open('assets/image_eCFB_dCFB.bmp','wb') as e:
+        with open('assets/'+orig_file[0:12]+'_dCFB.bmp','wb') as e:
             e.write(decrypted_file)
-        return "Decipher made successfully, the result is below this message and in the directory assets with the name 'image_eCFB_dCFB.bmp'"
+        return "Decipher made successfully, the result is below this message and in the directory assets with the name '"+orig_file[0:12]+"_dCFB.bmp'"
     except:
         return "Something went wrong"
 
@@ -111,9 +111,9 @@ def encrypt_OFB(password, IV, orig_file):
         padded_bytes = pad_message(bytestoEncrypt)
         encryptBytes = cipher.encrypt(padded_bytes)
         encrypted_file = header + encryptBytes
-        with open('assets/image_eOFB.bmp','wb') as e:
+        with open('assets/'+orig_file[0:7]+'_eOFB.bmp','wb') as e:
             e.write(encrypted_file)
-        return "Cipher made successfully, the result is below this message and in the directory assets with the name 'image_eOFB.bmp'"
+        return "Cipher made successfully, the result is below this message and in the directory assets with the name '"+orig_file[0:7]+"_eOFB.bmp'"
     except:
         return "Something went wrong"
 
@@ -125,8 +125,8 @@ def decrypt_OFB(password, IV, orig_file):
         header, bytestoDecrypt = manage_Image(orig_file)
         decryptBytes = cipher.decrypt(bytestoDecrypt)
         decrypted_file = header + decryptBytes
-        with open('assets/image_eOFB_dOFB.bmp','wb') as e:
+        with open('assets/'+orig_file[0:12]+'_dOFB.bmp','wb') as e:
             e.write(decrypted_file)
-        return "Decipher made successfully, the result is below this message and in the directory assets with the name 'image_eCFB_dCFB.bmp'"
+        return "Decipher made successfully, the result is below this message and in the directory assets with the name '"+orig_file[0:12]+"_dOFB.bmp'"
     except:
         return "Something went wrong"
