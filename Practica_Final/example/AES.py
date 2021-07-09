@@ -132,7 +132,7 @@ def signature(msgfile, priv_key):
         signature = signer.sign(hash)
         signature_hex = signature.hex()
         divider_message_sign = "_/_/"
-        f = open(direccion+"message_signed.txt", "w", encoding="ISO-8859-1")
+        f = open("message_signed.txt", "w", encoding="ISO-8859-1")
         f.write(msg+divider_message_sign+signature_hex)
         f.close()
         print("File signed successfully")
@@ -158,9 +158,9 @@ def validate(msg_sign_file, pub_key):
 def auxcifrar(Mensaje,priv_key,pub_key):
     contra = cifrarTexto(Mensaje)
     cifrarcontra(contra,pub_key)
-    contra = descifrarcontra(priv_key)
+    contra = descifrarcontra("cifrado.txt",priv_key)
     #print("contra: ",contra)
-    if(contra == "error_descifrar"):
+    if(contra == "mamadas"):
         auxcifrar()
 
 def C_S(msgfile, priv_key,pubkfile):

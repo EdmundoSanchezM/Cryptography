@@ -1,2 +1,4 @@
 # Cryptography
-Crypto class taken at escom
+Crypto class in ESCOM.
+<br>
+Teacher: Cortez Duarte Nidia Asuncion
